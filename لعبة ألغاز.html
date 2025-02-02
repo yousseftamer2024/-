@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الذكاء</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .answer {
+            padding: 10px;
+            width: 200px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>لعبة الذكاء</h1>
+        <h2 id="level">المستوى: 1</h2>
+        <div class="question" id="question"></div>
+        <input type="text" id="answer" class="answer" placeholder="اكتب إجابتك هنا">
+        <button class="btn" onclick="checkAnswer()">تحقق</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const levels = [
+            [
+                { q: "ما هو الشيء الذي كلما أخذت منه كبر؟", a: "الحفرة" },
+                { q: "ما هو الشيء الذي يسير بلا أرجل؟", a: "الساعة" }
+            ],
+            [
+                { q: "ما هو الشيء الذي ينبض بلا قلب؟", a: "الساعة" },
+                { q: "تراني ولا أراك، فمن أكون؟", a: "المرآة" }
+            ],
+            [
+                { q: "ما هو الشيء الذي إذا لمسته صرخ؟", a: "الجرس" },
+                { q: "ما هو الشيء الذي لديه أسنان لكنه لا يعض؟", a: "المشط" }
+            ]
+        ];
+        
+        let currentLevel = 0;
+        let currentQuestionIndex = 0;
+        
+        function loadQuestion() {
+            document.getElementById("level").innerText = `المستوى: ${currentLevel + 1}`;
+            document.getElementById("question").innerText = levels[currentLevel][currentQuestionIndex].q;
+            document.getElementById("answer").value = "";
+            document.getElementById("result").innerText = "";
+        }
+        
+        function checkAnswer() {
+            const userAnswer = document.getElementById("answer").value.trim();
+            const correctAnswer = levels[currentLevel][currentQuestionIndex].a;
+            
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").innerHTML = "✅ إجابة صحيحة! أحسنت!";
+                currentQuestionIndex++;
+                
+                if (currentQuestionIndex >= levels[currentLevel].length) {
+                    currentLevel++;
+                    currentQuestionIndex = 0;
+                    if (currentLevel >= levels.length) {
+                        document.getElementById("result").innerHTML = "🏆 مبروك! لقد أكملت جميع المستويات!";
+                        return;
+                    }
+                }
+                setTimeout(loadQuestion, 1000);
+            } else {
+                document.getElementById("result").innerHTML = "❌ إجابة خاطئة، حاول مرة أخرى!";
+            }
+        }
+        
+        loadQuestion();
+    </script>
+</body>
+</html>
